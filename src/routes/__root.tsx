@@ -77,19 +77,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "VenueIQ — Review Intelligence Agency for Hospitality" },
+      {
+        name: "description",
+        content:
+          "VenueIQ analyses every review across Google, Yelp and TripAdvisor and delivers a private, interactive intelligence report — telling you exactly what to fix, what to keep, and how to beat the competition.",
+      },
+      { name: "author", content: "VenueIQ" },
+      { property: "og:title", content: "VenueIQ — Review Intelligence Agency" },
+      {
+        property: "og:description",
+        content:
+          "Private, interactive review intelligence reports for hospitality venues. 48h delivery.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap",
       },
     ],
   }),
@@ -118,8 +128,20 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster
+        theme="dark"
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border-strong)",
+            color: "var(--color-text)",
+            fontFamily: "var(--font-body)",
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }
+
