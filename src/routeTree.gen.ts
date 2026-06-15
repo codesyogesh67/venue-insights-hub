@@ -9,38 +9,145 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ReportSlugRouteImport } from './routes/report.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminClientsIndexRouteImport } from './routes/admin.clients.index'
+import { Route as AdminClientsNewRouteImport } from './routes/admin.clients.new'
+import { Route as AdminClientsIdIndexRouteImport } from './routes/admin.clients.$id.index'
+import { Route as AdminClientsIdEditRouteImport } from './routes/admin.clients.$id.edit'
 
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ReportSlugRoute = ReportSlugRouteImport.update({
+  id: '/report/$slug',
+  path: '/report/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsIndexRoute = AdminClientsIndexRouteImport.update({
+  id: '/clients/',
+  path: '/clients/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsNewRoute = AdminClientsNewRouteImport.update({
+  id: '/clients/new',
+  path: '/clients/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsIdIndexRoute = AdminClientsIdIndexRouteImport.update({
+  id: '/clients/$id/',
+  path: '/clients/$id/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsIdEditRoute = AdminClientsIdEditRouteImport.update({
+  id: '/clients/$id/edit',
+  path: '/clients/$id/edit',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/report/$slug': typeof ReportSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
+  '/admin/clients/$id/edit': typeof AdminClientsIdEditRoute
+  '/admin/clients/$id/': typeof AdminClientsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/report/$slug': typeof ReportSlugRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
+  '/admin/clients': typeof AdminClientsIndexRoute
+  '/admin/clients/$id/edit': typeof AdminClientsIdEditRoute
+  '/admin/clients/$id': typeof AdminClientsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/report/$slug': typeof ReportSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
+  '/admin/clients/$id/edit': typeof AdminClientsIdEditRoute
+  '/admin/clients/$id/': typeof AdminClientsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin/login'
+    | '/report/$slug'
+    | '/admin/'
+    | '/admin/clients/new'
+    | '/admin/clients/'
+    | '/admin/clients/$id/edit'
+    | '/admin/clients/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin/login'
+    | '/report/$slug'
+    | '/admin'
+    | '/admin/clients/new'
+    | '/admin/clients'
+    | '/admin/clients/$id/edit'
+    | '/admin/clients/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin/login'
+    | '/report/$slug'
+    | '/admin/'
+    | '/admin/clients/new'
+    | '/admin/clients/'
+    | '/admin/clients/$id/edit'
+    | '/admin/clients/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  ReportSlugRoute: typeof ReportSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +155,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/report/$slug': {
+      id: '/report/$slug'
+      path: '/report/$slug'
+      fullPath: '/report/$slug'
+      preLoaderRoute: typeof ReportSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/': {
+      id: '/admin/clients/'
+      path: '/clients'
+      fullPath: '/admin/clients/'
+      preLoaderRoute: typeof AdminClientsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/new': {
+      id: '/admin/clients/new'
+      path: '/clients/new'
+      fullPath: '/admin/clients/new'
+      preLoaderRoute: typeof AdminClientsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/$id/': {
+      id: '/admin/clients/$id/'
+      path: '/clients/$id'
+      fullPath: '/admin/clients/$id/'
+      preLoaderRoute: typeof AdminClientsIdIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/$id/edit': {
+      id: '/admin/clients/$id/edit'
+      path: '/clients/$id/edit'
+      fullPath: '/admin/clients/$id/edit'
+      preLoaderRoute: typeof AdminClientsIdEditRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminClientsNewRoute: typeof AdminClientsNewRoute
+  AdminClientsIndexRoute: typeof AdminClientsIndexRoute
+  AdminClientsIdEditRoute: typeof AdminClientsIdEditRoute
+  AdminClientsIdIndexRoute: typeof AdminClientsIdIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminClientsNewRoute: AdminClientsNewRoute,
+  AdminClientsIndexRoute: AdminClientsIndexRoute,
+  AdminClientsIdEditRoute: AdminClientsIdEditRoute,
+  AdminClientsIdIndexRoute: AdminClientsIdIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  ReportSlugRoute: ReportSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
