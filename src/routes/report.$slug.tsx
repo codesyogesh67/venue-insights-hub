@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { clientStore } from "@/lib/clientStore";
 import { demoReport } from "@/data/demoReport";
