@@ -2,7 +2,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Share2, Edit, ArrowLeft } from "lucide-react";
+import { Share2, Edit, ArrowLeft, FileText } from "lucide-react";
 import { clientStore, type Client } from "@/lib/clientStore";
 import { ReportShell } from "@/components/report/ReportShell";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,14 @@ function ClientDetail() {
     refresh();
   };
 
+  const shareBrief = () => {
+    const url = `${window.location.origin}/brief/${client.slug}`;
+    navigator.clipboard.writeText(url);
+    clientStore.logActivity(client.id, "link_shared", "Brief report URL shared");
+    toast.success("Brief report URL copied to clipboard");
+    refresh();
+  };
+
   const saveNote = () => {
     if (!noteText.trim()) return;
     clientStore.addNote(client.id, noteText.trim());
@@ -48,23 +56,50 @@ function ClientDetail() {
 
   return (
     <div className="p-8 space-y-6 max-w-7xl">
-      <Link to="/admin/clients" className="text-xs text-muted-vq hover:text-foreground inline-flex items-center gap-1">
+      <Link
+        to="/admin/clients"
+        className="text-xs text-muted-vq hover:text-foreground inline-flex items-center gap-1"
+      >
         <ArrowLeft size={12} /> Back to clients
       </Link>
       <header className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="font-display text-4xl">{client.venueName}</h1>
-          <p className="text-muted-vq text-sm">{client.address}, {client.city} · {client.venueType}</p>
+          <p className="text-muted-vq text-sm">
+            {client.address}, {client.city} · {client.venueType}
+          </p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Link to="/admin/clients/$id/edit" params={{ id: client.id }} className="btn-ghost text-sm">
+          <Link
+            to="/admin/clients/$id/edit"
+            params={{ id: client.id }}
+            className="btn-ghost text-sm"
+          >
             <Edit size={13} /> Edit JSON
           </Link>
           <button onClick={share} className="btn-ghost text-sm">
-            <Share2 size={13} /> Share link
+            <Share2 size={13} /> Share full link
           </button>
-          <Link to="/report/$slug" params={{ slug: client.slug }} target="_blank" className="btn-filled text-sm">
-            Open public report
+          <button onClick={shareBrief} className="btn-ghost text-sm">
+            <Share2 size={13} /> Share brief link
+          </button>
+          {/* Brief (owner-friendly) report — opens in new tab */}
+          <Link
+            to="/brief/$slug"
+            params={{ slug: client.slug }}
+            target="_blank"
+            className="btn-ghost text-sm"
+          >
+            <FileText size={13} /> Brief report
+          </Link>
+          {/* Full detailed report — opens in new tab */}
+          <Link
+            to="/report/$slug"
+            params={{ slug: client.slug }}
+            target="_blank"
+            className="btn-filled text-sm"
+          >
+            Full report
           </Link>
         </div>
       </header>
@@ -76,7 +111,9 @@ function ClientDetail() {
             onClick={() => setTab(t)}
             className={cn(
               "px-4 py-2.5 text-sm border-b-2 -mb-px transition capitalize",
-              tab === t ? "border-accent-vq text-accent-bright" : "border-transparent text-muted-vq hover:text-foreground",
+              tab === t
+                ? "border-accent-vq text-accent-bright"
+                : "border-transparent text-muted-vq hover:text-foreground",
             )}
           >
             {t}
@@ -93,8 +130,15 @@ function ClientDetail() {
             ["Status", client.status, "var(--color-blue)"],
           ].map(([k, v, c]) => (
             <div key={k as string} className="card-vq p-5">
-              <div className="font-mono-vq text-[10px] uppercase text-muted-vq">{k as string}</div>
-              <div className="font-display text-4xl mt-2 font-semibold" style={{ color: c as string }}>{v}</div>
+              <div className="font-mono-vq text-[10px] uppercase text-muted-vq">
+                {k as string}
+              </div>
+              <div
+                className="font-display text-4xl mt-2 font-semibold"
+                style={{ color: c as string }}
+              >
+                {v}
+              </div>
             </div>
           ))}
         </div>
@@ -106,7 +150,9 @@ function ClientDetail() {
         </div>
       )}
       {tab === "report" && !client.reportJson && (
-        <div className="card-vq p-10 text-center text-muted-vq">No report JSON for this client yet.</div>
+        <div className="card-vq p-10 text-center text-muted-vq">
+          No report JSON for this client yet.
+        </div>
       )}
 
       {tab === "notes" && (
@@ -118,7 +164,9 @@ function ClientDetail() {
               placeholder="Add a note — context, decisions, follow-ups…"
               className="input-vq min-h-[100px]"
             />
-            <button onClick={saveNote} className="btn-filled">Save note</button>
+            <button onClick={saveNote} className="btn-filled">
+              Save note
+            </button>
           </div>
           {client.notes.map((n) => (
             <div key={n.id} className="card-vq p-4">
@@ -138,9 +186,16 @@ function ClientDetail() {
               <div className="w-1.5 h-1.5 rounded-full bg-accent-vq shrink-0" />
               <div className="flex-1">
                 <div className="text-sm">{a.description}</div>
-                <div className="text-xs text-muted-vq font-mono-vq">{new Date(a.createdAt).toLocaleString()} · {a.adminEmail}</div>
+                <div className="text-xs text-muted-vq font-mono-vq">
+                  {new Date(a.createdAt).toLocaleString()} · {a.adminEmail}
+                </div>
               </div>
-              <span className="badge-mono text-muted-vq" style={{ background: "var(--color-surface2)" }}>{a.actionType}</span>
+              <span
+                className="badge-mono text-muted-vq"
+                style={{ background: "var(--color-surface2)" }}
+              >
+                {a.actionType}
+              </span>
             </div>
           ))}
         </div>
