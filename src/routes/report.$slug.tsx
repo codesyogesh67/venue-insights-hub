@@ -29,18 +29,21 @@ function ReportPage() {
   const [report, setReport] = useState<VenueIQReport | null>(null);
   const [missing, setMissing] = useState(false);
 
-  useEffect(() => {
-    if (slug === "bagel-shop-demo") {
-      setReport(demoReport);
-      return;
-    }
+useEffect(() => {
+  if (slug === "bagel-shop-demo") { setReport(demoReport); return; }
+  
+  // Give localStorage one tick to settle after hydration
+  const tryLoad = () => {
     const c = clientStore.getBySlug(slug);
-    if (!c || !c.reportJson) {
-      setMissing(true);
-      return;
-    }
+    if (!c) { setMissing(true); return; }
+    if (!c.reportJson) { setMissing(true); return; }
     setReport(c.reportJson);
-  }, [slug]);
+  };
+
+  // Defer by one frame to avoid hydration race
+  const id = requestAnimationFrame(tryLoad);
+  return () => cancelAnimationFrame(id);
+}, [slug]);
 
   if (missing) {
     return (
