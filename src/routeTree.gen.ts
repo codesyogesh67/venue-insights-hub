@@ -13,13 +13,12 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ReportSlugRouteImport } from './routes/report.$slug'
+import { Route as BriefSlugRouteImport } from './routes/brief.$slug'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminClientsIndexRouteImport } from './routes/admin.clients.index'
 import { Route as AdminClientsNewRouteImport } from './routes/admin.clients.new'
 import { Route as AdminClientsIdIndexRouteImport } from './routes/admin.clients.$id.index'
 import { Route as AdminClientsIdEditRouteImport } from './routes/admin.clients.$id.edit'
-import { Route as BriefSlugRouteImport } from './routes/brief.$slug'
-
 
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
@@ -41,13 +40,11 @@ const ReportSlugRoute = ReportSlugRouteImport.update({
   path: '/report/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-
 const BriefSlugRoute = BriefSlugRouteImport.update({
   id: '/brief/$slug',
   path: '/brief/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -79,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/report/$slug': typeof ReportSlugRoute
+  '/brief/$slug': typeof BriefSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -89,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
   '/report/$slug': typeof ReportSlugRoute
+  '/brief/$slug': typeof BriefSlugRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients': typeof AdminClientsIndexRoute
@@ -101,6 +100,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/report/$slug': typeof ReportSlugRoute
+  '/brief/$slug': typeof BriefSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -114,6 +114,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/login'
     | '/report/$slug'
+    | '/brief/$slug'
     | '/admin/'
     | '/admin/clients/new'
     | '/admin/clients/'
@@ -124,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/login'
     | '/report/$slug'
+    | '/brief/$slug'
     | '/admin'
     | '/admin/clients/new'
     | '/admin/clients'
@@ -135,6 +137,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/login'
     | '/report/$slug'
+    | '/brief/$slug'
     | '/admin/'
     | '/admin/clients/new'
     | '/admin/clients/'
@@ -146,6 +149,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   ReportSlugRoute: typeof ReportSlugRoute
+  BriefSlugRoute: typeof BriefSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -176,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/report/$slug'
       fullPath: '/report/$slug'
       preLoaderRoute: typeof ReportSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brief/$slug': {
+      id: '/brief/$slug'
+      path: '/brief/$slug'
+      fullPath: '/brief/$slug'
+      preLoaderRoute: typeof BriefSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
@@ -240,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   ReportSlugRoute: ReportSlugRoute,
+  BriefSlugRoute: BriefSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
