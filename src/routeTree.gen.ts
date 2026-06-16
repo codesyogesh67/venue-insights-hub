@@ -18,6 +18,8 @@ import { Route as AdminClientsIndexRouteImport } from './routes/admin.clients.in
 import { Route as AdminClientsNewRouteImport } from './routes/admin.clients.new'
 import { Route as AdminClientsIdIndexRouteImport } from './routes/admin.clients.$id.index'
 import { Route as AdminClientsIdEditRouteImport } from './routes/admin.clients.$id.edit'
+import { Route as BriefSlugRouteImport } from './routes/brief.$slug'
+
 
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
@@ -39,6 +41,13 @@ const ReportSlugRoute = ReportSlugRouteImport.update({
   path: '/report/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+
+const BriefSlugRoute = BriefSlugRouteImport.update({
+  id: '/brief/$slug',
+  path: '/brief/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
