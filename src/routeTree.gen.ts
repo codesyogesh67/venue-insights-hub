@@ -75,8 +75,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
-  '/report/$slug': typeof ReportSlugRoute
   '/brief/$slug': typeof BriefSlugRoute
+  '/report/$slug': typeof ReportSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -86,8 +86,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
-  '/report/$slug': typeof ReportSlugRoute
   '/brief/$slug': typeof BriefSlugRoute
+  '/report/$slug': typeof ReportSlugRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients': typeof AdminClientsIndexRoute
@@ -99,8 +99,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
-  '/report/$slug': typeof ReportSlugRoute
   '/brief/$slug': typeof BriefSlugRoute
+  '/report/$slug': typeof ReportSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -113,8 +113,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/login'
-    | '/report/$slug'
     | '/brief/$slug'
+    | '/report/$slug'
     | '/admin/'
     | '/admin/clients/new'
     | '/admin/clients/'
@@ -124,8 +124,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/login'
-    | '/report/$slug'
     | '/brief/$slug'
+    | '/report/$slug'
     | '/admin'
     | '/admin/clients/new'
     | '/admin/clients'
@@ -136,8 +136,8 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/login'
-    | '/report/$slug'
     | '/brief/$slug'
+    | '/report/$slug'
     | '/admin/'
     | '/admin/clients/new'
     | '/admin/clients/'
@@ -148,8 +148,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
-  ReportSlugRoute: typeof ReportSlugRoute
   BriefSlugRoute: typeof BriefSlugRoute
+  ReportSlugRoute: typeof ReportSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -250,9 +250,19 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
-  ReportSlugRoute: ReportSlugRoute,
   BriefSlugRoute: BriefSlugRoute,
+  ReportSlugRoute: ReportSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
