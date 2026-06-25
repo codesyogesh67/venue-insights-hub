@@ -10,19 +10,21 @@
   --color-surface2: #141d2e;
   --color-accent: #c9973a;
   --color-accent-bright: #f0b84a;
-  --color-text: #e8e2d5;
-  --color-text-warm: #f5efe1;
-  --color-muted: #7a7060;
-  --color-border: rgba(201, 151, 58, 0.15);
-  --color-border-strong: rgba(201, 151, 58, 0.3);
+  --color-text: #ede8dc;
+  --color-text-warm: #f7f2e8;
+  --color-text-secondary: #c8c0b0;
+  --color-muted: #9b9080;
+  --color-border: rgba(201, 151, 58, 0.18);
+  --color-border-strong: rgba(201, 151, 58, 0.35);
   --color-glow: rgba(201, 151, 58, 0.12);
   --color-emerald: #00c48c;
   --color-coral: #ff5c5c;
   --color-blue: #4e9eff;
 
-  --font-display: "Cormorant Garamond", "Times New Roman", serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
-  --font-mono: "Space Mono", "Menlo", monospace;
+  /* Typography — Inter for data clarity, Playfair for editorial premium feel */
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Menlo", monospace;
 
   --radius: 12px;
 }
@@ -72,12 +74,21 @@
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
-    font-feature-settings: "ss01", "ss02";
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv01", "cv02", "tnum";
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--color-text-warm);
+  }
+  p {
+    line-height: 1.75;
   }
   ::selection {
     background: var(--color-accent);
@@ -108,6 +119,9 @@
 }
 @utility text-muted-vq {
   color: var(--color-muted);
+}
+@utility text-secondary-vq {
+  color: var(--color-text-secondary);
 }
 @utility bg-surface {
   background-color: var(--color-surface);
